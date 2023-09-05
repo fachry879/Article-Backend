@@ -42,6 +42,8 @@ CI_ENVIRONMENT = development
 
 # app_baseURL = ''
 
+app_baseURL = 'http://localhost:8080/'
+
 # app.forceGlobalSecureRequests = false
 
 # app.CSPEnabled = false
@@ -52,15 +54,25 @@ CI_ENVIRONMENT = development
 
 #--------------------------------------------------------------------
 
-# database.default.hostname = localhost
+<!-- # database.default.hostname = localhost -->
 
-# database.default.database = ci4
+database.default.hostname = localhost
 
-# database.default.username = root
+<!-- # database.default.database = ci4 -->
 
-# database.default.password = root
+database.default.database = db_article
 
-# database.default.DBDriver = MySQLi
+<!-- # database.default.username = root -->
+
+database.default.username = root
+
+<!-- # database.default.password = root -->
+
+database.default.password =
+
+<!-- # database.default.DBDriver = MySQLi -->
+
+database.default.DBDriver = MySQLi
 
 # database.default.DBPrefix =
 
