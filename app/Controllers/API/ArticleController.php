@@ -5,6 +5,7 @@ namespace App\Controllers\API;
 use CodeIgniter\RESTful\ResourceController;
 use App\Models\ArticleModel;
 use CodeIgniter\API\ResponseTrait;
+use CodeIgniter\I18n\Time;
 
 class ArticleController extends ResourceController
 {
@@ -17,7 +18,21 @@ class ArticleController extends ResourceController
     {
         $model = new ArticleModel();
         $data = $model->findAll();
-        return $this->respond($data);
+
+        if (empty($data)) {
+            $response = [
+                'status' => 'error',
+                'message' => 'Article List not found, please add some Article',
+            ];
+        } else {
+            $response = [
+                'status' => 'success',
+                'data' => $data,
+                'message' => 'Success get Article list',
+            ];
+        }
+
+        return $this->respondCreated($response);
     }
 
     /**
@@ -39,7 +54,8 @@ class ArticleController extends ResourceController
                 'content' => $this->request->getVar('content'),
                 'category' => $this->request->getVar('category'),
                 'writer' => 1,
-                'slug' => 'lorem ipsum',
+                'publish_date' => Time::now('Asia/Jakarta', 'en_US'),
+                'slug' => url_title(strtolower($this->request->getVar('title'))),
             ];
 
             $model->save($data);
@@ -57,10 +73,10 @@ class ArticleController extends ResourceController
      * Get data Article
      */
 
-    public function show($id = null)
+    public function show($article_id = null)
     {
         $model = new ArticleModel();
-        $data = $model->where('id', $id)->first();
+        $data = $model->where('id', $article_id)->first();
 
         if ($data) {
             return $this->respond($data);
@@ -72,43 +88,68 @@ class ArticleController extends ResourceController
     /**
      * Update data Article
      */
-    public function update($id = null)
+    public function update($article_id = null)
     {
+
         $model = new ArticleModel();
-        $id = $this->request->getVar('id');
-        $data = [
-            'title' => $this->request->getVar('title'),
-            'content' => $this->request->getVar('content'),
-            'category' => $this->request->getVar('category'),
-        ];
-        $model->update($data);
 
-        $response = [
-            'status' => 'success',
-            'message' => 'Article updated',
-        ];
+        if (!$this->validate($model->validationRules, $model->validationMessages)) {
+            $response = [
+                'status' => 'error',
+                'message' => $this->validator->getErrors(),
+            ];
+        } else {
 
-        return $this->respond($response);
+            if ($model->find($article_id)) {
+
+                $data = [
+                    'title' => $this->request->getVar('title'),
+                    'content' => $this->request->getVar('content'),
+                    'category' => $this->request->getVar('category'),
+                    // 'writer' => 1,
+                    // 'publish_date' => Time::now('Asia/Jakarta', 'en_US'),
+                    'slug' => url_title(strtolower($this->request->getVar('title'))),
+                ];
+
+                $model->update($article_id, $data);
+
+                $response = [
+                    'status' => 'success',
+                    'message' => 'Article updated',
+                ];
+            } else {
+                $response = [
+                    'status' => 'error',
+                    'messages' => 'No Article found',
+                ];
+            }
+        }
+
+        return $this->respondCreated($response);
     }
 
     /**
      * Delete data Article
      */
-    public function delete($id = null)
+    public function delete($article_id = null)
     {
         $model = new ArticleModel();
-        $data = $model->where('id', $id)->delete($id);
+        $data = $model->find($article_id);
 
-        if ($data) {
-            $model->delete($id);
+        if (!empty($data)) {
+            $model->delete($article_id);
+
             $response = [
                 'status' => 'success',
                 'message' => 'Article deleted',
             ];
-
-            return $this->respondDeleted($response);
         } else {
-            return $this->failNotFound('No Article found or already deleted');
+            $response = [
+                'status' => 'error',
+                'message' => 'No Article found or already deleted',
+            ];
         }
+
+        return $this->respondCreated($response);
     }
 }

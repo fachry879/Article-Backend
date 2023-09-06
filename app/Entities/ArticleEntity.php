@@ -47,7 +47,8 @@ class ArticleEntity extends Entity
 
     public function setSlug(string $slug): self
     {
-        $this->attributes['slug'] = url_title(strtolower($slug));
+        // $this->attributes['slug'] = url_title(strtolower($slug));
+        $this->attributes['slug'] = $slug;
         return $this;
     }
 }
