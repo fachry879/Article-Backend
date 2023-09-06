@@ -24,4 +24,16 @@ class ArticleModel extends Model
         'content' => 'required',
         'category' => 'required',
     ];
+
+    protected $validationMessages = [
+        'title' => [
+            'required' => 'Title is required',
+        ],
+        'content' => [
+            'required' => 'Content is required',
+        ],
+        'category' => [
+            'required' => 'Category is required',
+        ],
+    ];
 }
