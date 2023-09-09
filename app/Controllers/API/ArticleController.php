@@ -17,7 +17,7 @@ class ArticleController extends ResourceController
     public function index()
     {
         $model = new ArticleModel();
-        $data = $model->findAll();
+        $data = $model->orderBy('id', 'desc')->findAll();
 
         if (empty($data)) {
             $response = [
