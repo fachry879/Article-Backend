@@ -4,12 +4,38 @@ namespace App\Controllers\API;
 
 use CodeIgniter\RESTful\ResourceController;
 use App\Models\ArticleModel;
+use App\Models\CategoryModel;
 use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\I18n\Time;
 
 class ArticleController extends ResourceController
 {
     use ResponseTrait;
+
+    /**
+     * Get List Category
+     */
+
+    public function getCategory()
+    {
+        $model = new CategoryModel();
+        $data = $model->findAll();
+
+        if (empty($data)) {
+            $response = [
+                'status' => 'error',
+                'message' => 'Category list not found, please add some Category',
+            ];
+        } else {
+            $response = [
+                'status' => 'success',
+                'data' => $data,
+                'message' => 'Success get list Category'
+            ];
+        }
+
+        return $this->respondCreated($response);
+    }
 
     /**
      * Get list article
@@ -22,7 +48,7 @@ class ArticleController extends ResourceController
         if (empty($data)) {
             $response = [
                 'status' => 'error',
-                'message' => 'Article List not found, please add some Article',
+                'message' => 'Article list not found, please add some Article',
             ];
         } else {
             $response = [
@@ -48,7 +74,6 @@ class ArticleController extends ResourceController
                 'message' => $this->validator->getErrors(),
             ];
         } else {
-
             $data = [
                 'title' => $this->request->getVar('title'),
                 'content' => $this->request->getVar('content'),

@@ -32,15 +32,11 @@ class CreateUsersTable extends Migration
                 'null' => false,
             ],
             'created_at' => [
-                'type' => 'DATETIME',
+                'type' => 'TIMESTAMP',
                 'null' => true
             ],
             'updated_at' => [
-                'type' => 'DATETIME',
-                'null' => true
-            ],
-            'deleted_at' => [
-                'type' => 'DATETIME',
+                'type' => 'TIMESTAMP',
                 'null' => true
             ]
         ];

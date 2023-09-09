@@ -21,16 +21,12 @@ class CreateCategoriesTable extends Migration
                 'null' => false,
             ],
             'created_at' => [
-                'type' => 'datetime',
-                'null' => TRUE
+                'type' => 'TIMESTAMP',
+                'null' => true
             ],
             'updated_at' => [
-                'type' => 'datetime',
-                'null' => TRUE
-            ],
-            'deleted_at' => [
-                'type' => 'datetime',
-                'null' => TRUE
+                'type' => 'TIMESTAMP',
+                'null' => true
             ]
         ]);
 
