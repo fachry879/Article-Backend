@@ -8,6 +8,11 @@ use CodeIgniter\Router\RouteCollection;
  */
 // $routes->get('/', 'Home::index');
 
+$routes->group('user', static function ($routes) {
+    $routes->post('register', 'UserController::register');
+    $routes->post('login', 'UserController::login');
+});
+
 $routes->group('article', static function ($routes) {
     $routes->get('category', 'ArticleController::getCategory');
     $routes->get('list', 'ArticleController::index');
