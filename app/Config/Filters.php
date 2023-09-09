@@ -25,6 +25,7 @@ class Filters extends BaseConfig
         'invalidchars'  => InvalidChars::class,
         'secureheaders' => SecureHeaders::class,
         'options'       => \App\Filters\Options::class,
+        'cors'          => \Fluent\Cors\Filters\CorsFilter::class,
     ];
 
     /**
@@ -68,5 +69,10 @@ class Filters extends BaseConfig
      * Example:
      * 'isLoggedIn' => ['before' => ['account/*', 'profiles/*']]
      */
-    public array $filters = [];
+    public array $filters = [
+        'cors' => [
+            'before' => ['api/*'],
+            'after' => ['api/*']
+        ],
+    ];
 }
