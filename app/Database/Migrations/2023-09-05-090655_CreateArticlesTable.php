@@ -60,8 +60,8 @@ class CreateArticlesTable extends Migration
         ]);
 
         $this->forge->addKey('id', true);
-        $this->forge->addForeignKey('writer', 'users', 'id', 'CASCADE', 'CASCADE');
-        $this->forge->addForeignKey('category', 'categories', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('writer', 'users', 'id');
+        $this->forge->addForeignKey('category', 'categories', 'id');
         $this->forge->createTable('articles');
     }
 
