@@ -12,6 +12,12 @@ class UserModel extends Model
     protected $allowedFields    = ['email', 'password', 'full_name'];
     protected $returnType       = UserEntity::class;
 
+    // Dates
+    protected $useTimestamps        = true;
+    protected $dateFormat           = 'datetime';
+    protected $createdField         = 'created_at';
+    protected $updatedField         = 'updated_at';
+
 
     protected $validationRules = [
         'email' => 'required|valid_email|max_length[100]',
