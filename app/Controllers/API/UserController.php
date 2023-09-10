@@ -42,7 +42,7 @@ class UserController extends ResourceController
                     $response = [
                         'status' => 'success',
                         'token' => $token,
-                        'full_name' => $user->full_name,
+                        'id_user' => $user->id,
                         'message' => 'Login Success',
                     ];
                 } else {
