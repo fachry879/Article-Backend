@@ -28,6 +28,7 @@ class CreateUsersTable extends Migration
             ],
             'password' => [
                 'type' => 'VARCHAR',
+                'constraint' => 255,
                 'null' => false,
             ],
             'created_at' => [
