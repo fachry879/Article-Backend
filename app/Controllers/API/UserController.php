@@ -5,7 +5,7 @@ namespace App\Controllers\API;
 use CodeIgniter\API\ResponseTrait;
 use CodeIgniter\RESTful\ResourceController;
 use App\Models\UserModel;
-use Firebase\JWT\JWT;
+use App\Libraries\JWTLibrary;
 
 class UserController extends ResourceController
 {
@@ -18,47 +18,44 @@ class UserController extends ResourceController
     {
         $model = new UserModel();
 
-        $email = $this->request->getVar('email');
-        $password = $this->request->getVar('password');
-
-        $user = $model->where('email', $email)->first();
-
-        if (is_null($user)) {
+        if (!$this->validate($model->validationLoginRules, $model->validationLoginMessages)) {
             $response = [
                 'status' => 'error',
-                'message' => 'Invalid Email or Password, please try again',
+                'message' => $this->validator->getErrors(),
             ];
+        } else {
+
+            $email = $this->request->getVar('email');
+            $password = $this->request->getVar('password');
+
+            $user = $model->where('email', $email)->first();
+
+            if ($user) {
+                $confirm_pass = password_verify($password, $user->password);
+
+                if ($confirm_pass) {
+
+                    $jwt = new JWTLibrary;
+                    $token = $jwt->token();
+
+                    $response = [
+                        'status' => 'success',
+                        'token' => $token,
+                        'message' => 'Login Success',
+                    ];
+                } else {
+                    $response = [
+                        'status' => 'error',
+                        'message' => 'Invalid Password, Please try again',
+                    ];
+                }
+            } else {
+                $response = [
+                    'status' => 'error',
+                    'message' => 'Invalid Email, please try again',
+                ];
+            }
         }
-
-        $confirm_pass = password_verify($password, $user['password']);
-
-        if (!$confirm_pass) {
-            $response = [
-                'status' => 'error',
-                'message' => 'Invalid Email or Password, please try again'
-            ];
-        }
-
-        $key = getenv('JWT_SECRET');
-        $issued_at = time(); //current time stamp value
-        $expired = $issued_at + 3600;
-
-        $payload = array(
-            'iss' => 'User Login', //issuer of the JWT
-            'audience' => 'User', //Audience that the JWT
-            'subject' =>  'Login to App', //Subject to the JWT
-            'issued_at' => $issued_at, //Time the JWT issued at
-            'expired' => $expired, //Expiration time of token
-            'email' => $user['email'],
-        );
-
-        $token = JWT::encode($payload, $key, 'HS256');
-
-        $response = [
-            'status' => 'success',
-            'token' => $token,
-            'message' => 'Login success',
-        ];
 
         return $this->respondCreated($response);
     }
@@ -70,7 +67,7 @@ class UserController extends ResourceController
     {
         $model = new UserModel();
 
-        if (!$this->validate($model->validationRules, $model->validationMessages)) {
+        if (!$this->validate($model->validationRegisterRules, $model->validationRegisterMessages)) {
             $response = [
                 'status' => 'error',
                 'message' => $this->validator->getErrors(),

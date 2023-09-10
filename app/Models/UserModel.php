@@ -18,17 +18,31 @@ class UserModel extends Model
     protected $createdField         = 'created_at';
     protected $updatedField         = 'updated_at';
 
-
-    protected $validationRules = [
+    protected $validationLoginRules = [
         'email' => 'required|valid_email|max_length[100]',
         'password' => 'required|max_length[50]',
+    ];
+
+    protected $validationLoginMessages = [
+        'email' => [
+            'required' => 'Email is required',
+        ],
+        'password' => [
+            'required' => 'Password is required',
+        ],
+    ];
+
+    protected $validationRegisterRules = [
+        'email' => 'required|valid_email|max_length[100]|is_unique[users.email]',
+        'password' => 'required',
         'confirm_password' => 'required|max_length[100]|matches[password]',
         'full_name' => 'required|max_length[100]',
     ];
 
-    protected $validationMessages = [
+    protected $validationRegisterMessages = [
         'email' => [
             'required' => 'Email is required',
+            'is_unique' => 'Email already exists, please input another email',
         ],
         'password' => [
             'required' => 'Password is required',

@@ -26,8 +26,8 @@ class UserEntity extends Entity
 
     public function setPassword(string $password): self
     {
-        // $this->attributes['password'] = password_hash($password, PASSWORD_BCRYPT);
-        $this->attributes['password'] = $password;
+        $this->attributes['password'] = password_hash($password, PASSWORD_BCRYPT);
+        // $this->attributes['password'] = $password;
         return $this;
     }
 }
