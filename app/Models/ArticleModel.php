@@ -42,4 +42,16 @@ class ArticleModel extends Model
             'required' => 'Category is required',
         ],
     ];
+
+    public function getDataArticle($article_id = null)
+    {
+        return $this->db->table('articles')
+            ->join('categories', 'categories.id = articles.category')
+            ->join('users', 'users.id = articles.writer')
+            ->select('articles.*')
+            ->select('categories.name as article_category')
+            ->select('users.full_name as article_writer')
+            ->where('articles.id', $article_id)
+            ->get()->getResultObject();
+    }
 }

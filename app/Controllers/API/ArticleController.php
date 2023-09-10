@@ -71,7 +71,8 @@ class ArticleController extends ResourceController
         if (!$this->validate($model->validationRules, $model->validationMessages)) {
             $response = [
                 'status' => 'error',
-                'message' => $this->validator->getErrors(),
+                'data' => $this->validator->getErrors(),
+                'message' => 'Validation Error, please check again',
             ];
         } else {
             $data = [
@@ -101,7 +102,8 @@ class ArticleController extends ResourceController
     public function show($article_id = null)
     {
         $model = new ArticleModel();
-        $data = $model->where('id', $article_id)->first();
+        // $data = $model->where('id', $article_id)->first();
+        $data = $model->getDataArticle($article_id);
 
         if ($data) {
             return $this->respond($data);
@@ -121,7 +123,8 @@ class ArticleController extends ResourceController
         if (!$this->validate($model->validationRules, $model->validationMessages)) {
             $response = [
                 'status' => 'error',
-                'message' => $this->validator->getErrors(),
+                'data' => $this->validator->getErrors(),
+                'message' => 'Validation Error, please check again',
             ];
         } else {
 
