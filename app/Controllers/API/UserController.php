@@ -21,7 +21,8 @@ class UserController extends ResourceController
         if (!$this->validate($model->validationLoginRules, $model->validationLoginMessages)) {
             $response = [
                 'status' => 'error',
-                'message' => $this->validator->getErrors(),
+                'data' => $this->validator->getErrors(),
+                'message' => 'Validation Error, please check again',
             ];
         } else {
 
@@ -41,6 +42,7 @@ class UserController extends ResourceController
                     $response = [
                         'status' => 'success',
                         'token' => $token,
+                        'name' => $user->full_name,
                         'message' => 'Login Success',
                     ];
                 } else {
@@ -70,7 +72,8 @@ class UserController extends ResourceController
         if (!$this->validate($model->validationRegisterRules, $model->validationRegisterMessages)) {
             $response = [
                 'status' => 'error',
-                'message' => $this->validator->getErrors(),
+                'data' => $this->validator->getErrors(),
+                'message' => 'Validation Error, please check again',
             ];
         } else {
             $data = [
@@ -83,7 +86,7 @@ class UserController extends ResourceController
 
             $response = [
                 'status' => 'success',
-                'message' => 'Register success',
+                'message' => 'Register success, you can login using your account.',
             ];
         }
 

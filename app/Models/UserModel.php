@@ -49,6 +49,7 @@ class UserModel extends Model
         ],
         'confirm_password' => [
             'required' => 'Confirm Password is required',
+            'matches' => 'Confirm Password does not match Password',
         ],
         'full_name' => [
             'required' => 'Full Name is required',
