@@ -79,7 +79,7 @@ class ArticleController extends ResourceController
                 'title' => $this->request->getVar('title'),
                 'content' => $this->request->getVar('content'),
                 'category' => $this->request->getVar('category'),
-                'writer' => 1,
+                'writer' => $this->request->getVar('writer'),
                 'publish_date' => Time::now('Asia/Jakarta', 'en_US'),
                 'slug' => url_title(strtolower($this->request->getVar('title'))),
             ];
