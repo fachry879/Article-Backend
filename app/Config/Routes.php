@@ -8,17 +8,17 @@ use CodeIgniter\Router\RouteCollection;
  */
 // $routes->get('/', 'Home::index');
 
-$routes->group('user', static function ($routes) {
+$routes->group('user', ['filter' => 'cors'], static function ($routes) {
     $routes->get('profile/(:segment)', 'UserController::show/$1');
     $routes->post('register', 'UserController::register');
     $routes->post('login', 'UserController::login');
 });
 
-$routes->group('article', static function ($routes) {
+$routes->group('article', ['filter' => 'cors'], static function ($routes) {
     $routes->get('category', 'ArticleController::getCategory');
     $routes->get('list', 'ArticleController::index');
-    $routes->post('create', 'ArticleController::create');
+    $routes->post('create', 'ArticleController::create', ['filter' => 'cors', 'auth']);
     $routes->get('data/(:segment)', 'ArticleController::show/$1');
-    $routes->put('update/(:segment)', 'ArticleController::update/$1');
-    $routes->delete('delete/(:segment)', 'ArticleController::delete/$1');
+    $routes->put('update/(:segment)', 'ArticleController::update/$1', ['filter' => 'cors', 'auth']);
+    $routes->delete('delete/(:segment)', 'ArticleController::delete/$1', ['filter' => 'cors', 'auth']);
 });
