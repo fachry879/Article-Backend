@@ -9,6 +9,7 @@ use CodeIgniter\Router\RouteCollection;
 // $routes->get('/', 'Home::index');
 
 $routes->group('user', static function ($routes) {
+    $routes->get('profile/(:segment)', 'UserController::show/$1');
     $routes->post('register', 'UserController::register');
     $routes->post('login', 'UserController::login');
 });

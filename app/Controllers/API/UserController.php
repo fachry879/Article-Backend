@@ -92,4 +92,15 @@ class UserController extends ResourceController
 
         return $this->respondCreated($response);
     }
+
+    /**
+     * Get User Login
+     */
+    public function show($id = null)
+    {
+        $model = new UserModel();
+        $data = $model->where('id', $id)->first();
+
+        return $this->respond($data);
+    }
 }
